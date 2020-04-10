@@ -162,7 +162,7 @@
 
 <script>
     //新增数据
-    function insertCourse() {
+    function insertDocument() {
         parent.layer.open({   //打开一个弹出层
             title: '新增教学文档',   //弹出层的标题
             maxmin: true,

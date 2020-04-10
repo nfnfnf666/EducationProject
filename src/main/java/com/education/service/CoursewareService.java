@@ -24,4 +24,12 @@ public class CoursewareService {
         return coursewareMapper.selectByPrimaryKey(coursewareId);
     }
 
+    public int deleteCoursewareById(Integer coursewareId){
+        return coursewareMapper.deleteByPrimaryKey(coursewareId);
+    }
+
+    public int insertCourseware(Courseware courseware){
+        return coursewareMapper.insert(courseware);
+    }
+
 }

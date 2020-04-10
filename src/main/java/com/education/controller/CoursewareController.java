@@ -6,7 +6,7 @@ import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
-import org.apache.commons.fileupload.util.Streams;
+import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,14 +15,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.servlet.ServletContext;
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 @Controller
 public class CoursewareController {
@@ -108,29 +106,94 @@ public class CoursewareController {
         return mav;
     }
 
-    @RequestMapping("uploadCourseware")
-    public void uploadCourseware(HttpServletRequest request, HttpServletResponse response,
-                                 @RequestParam("coursewareName") String coursewareName,
-                                 @RequestParam("coursewareType") String coursewareType,
-                                 @RequestParam("file") MultipartFile file,
-                                 @RequestParam("uploadTime") String uploadTime) throws IOException {
-        // 上传文件
-        ServletContext sctx = request.getServletContext();
-        // 获得保存文件的路径
-        String basePath = sctx.getRealPath("/upload/"+coursewareType);
-        // 获得文件名
-        String fileName = file.getOriginalFilename();
-        // 截取文件格式
-        String fileType = fileName.substring(fileName.lastIndexOf("."));
-        // 自定义方式产生文件名
-        String serialName = String.valueOf(System.currentTimeMillis());
-        // 待转码的文件
-        String realPath = basePath + "/" + serialName + fileType;
-        System.out.println("uploadCourseware.do: realPath" + realPath);
-        File uploadFile = new File(realPath);
-        // 保存文件
-        Streams.copy(file.getInputStream(),new FileOutputStream(uploadFile.getAbsolutePath()),true);
+    @RequestMapping(value = "delCourseware")
+    @ResponseBody
+    public String delCourseware(@RequestParam(value = "coursewareId" ,required = false) Integer coursewareId){
+        int i=coursewareService.deleteCoursewareById(coursewareId);
+        JSONObject json=new JSONObject();
+        json.put("code",0);
+        json.put("msg","");
+        json.put("count",1);
+        json.put("data",i);
+        return json.toString();
+    }
 
+    @RequestMapping("uploadVideo")
+    @ResponseBody
+    public String uploadVideo(@RequestParam MultipartFile file, HttpServletRequest request) throws IOException {
+        if(file.isEmpty()){
+            return null;
+        }
+        System.out.println("uploadVideo.do:中的request.getServletContext().getRealPath()" + request.getServletContext().getRealPath("/courseware/video/"));
+        //创建JSON对象
+        JSONObject json = new JSONObject();
+        json.put("code",0);
+        json.put("msg","");
+        json.put("count",1);
+
+        String newName = UUID.randomUUID().toString()+"_"+file.getOriginalFilename();
+        String videoPath = request.getServletContext().getRealPath("/courseware/video/") + newName;
+        //将文件上传到本地
+        FileUtils.copyInputStreamToFile(file.getInputStream(),new File(videoPath));
+        JSONObject json2 = new JSONObject();
+        json2.put("src", "courseware/video/" + newName);
+        json.put("data", json2);
+        return json.toString();
+    }
+
+    @RequestMapping(value = "insertVideo")
+    @ResponseBody
+    public String insertVideo(Courseware courseware, HttpServletRequest request){
+        courseware.setCourselistId((Integer) request.getSession().getAttribute("courselistId"));
+        courseware.setCoursewareType("video");
+        courseware.setUploadTime(new Date());
+        int i=coursewareService.insertCourseware(courseware);
+        JSONObject json=new JSONObject();
+        json.put("code",0);
+        json.put("msg","");
+        json.put("count",1);
+
+        json.put("data",i);
+        return json.toString();
+    }
+
+    @RequestMapping("uploadDocument")
+    @ResponseBody
+    public String uploadDocument(@RequestParam MultipartFile file, HttpServletRequest request) throws IOException {
+        if(file.isEmpty()){
+            return null;
+        }
+        System.out.println("uploadDocument.do:中的request.getServletContext().getRealPath()" + request.getServletContext().getRealPath("/courseware/document/"));
+        //创建JSON对象
+        JSONObject json = new JSONObject();
+        json.put("code",0);
+        json.put("msg","");
+        json.put("count",1);
+
+        String newName = UUID.randomUUID().toString()+"_"+file.getOriginalFilename();
+        String documentPath = request.getServletContext().getRealPath("/courseware/document/") + newName;
+        //将文件上传到本地
+        FileUtils.copyInputStreamToFile(file.getInputStream(),new File(documentPath));
+        JSONObject json2 = new JSONObject();
+        json2.put("src", "courseware/document/" + newName);
+        json.put("data", json2);
+        return json.toString();
+    }
+
+    @RequestMapping(value = "insertDocument")
+    @ResponseBody
+    public String insertDocument(Courseware courseware, HttpServletRequest request){
+        courseware.setCourselistId((Integer) request.getSession().getAttribute("courselistId"));
+        courseware.setCoursewareType("document");
+        courseware.setUploadTime(new Date());
+        int i=coursewareService.insertCourseware(courseware);
+        JSONObject json=new JSONObject();
+        json.put("code",0);
+        json.put("msg","");
+        json.put("count",1);
+
+        json.put("data",i);
+        return json.toString();
     }
 
 }

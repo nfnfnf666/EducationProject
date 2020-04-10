@@ -37,7 +37,7 @@
     delete from courseware
     where courseware_id = #{coursewareId,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.education.pojo.Courseware" >
+  <insert id="insert" parameterType="com.education.pojo.Courseware" useGeneratedKeys="true" keyProperty="coursewareId">
     insert into courseware (courseware_id, courseware_name, courseware_type, 
       courseware_url, courselist_id, upload_time
       )
