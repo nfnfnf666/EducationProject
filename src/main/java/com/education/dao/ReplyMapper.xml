@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.education.dao.ReplyMapper" >
+  <resultMap id="BaseResultMap" type="com.education.pojo.Reply" >
+    <constructor >
+      <idArg column="reply_id" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="topic_id" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="replyer_id" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="reply_content" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="reply_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+    </constructor>
+  </resultMap>
+
+  <resultMap id="ReplyVoListMap" type="com.education.pojo.ReplyVo">
+    <result property="reply.replyId" column="reply_id"/>
+    <result property="reply.topicId" column="topic_id"/>
+    <result property="reply.replyerId" column="replyer_id"/>
+    <result property="reply.replyContent" column="reply_content"/>
+    <result property="reply.replyTime" column="reply_time"/>
+    <result property="student.studentId" column="student_id"/>
+    <result property="student.studentName" column="student_name"/>
+    <result property="student.studentPwd" column="student_pwd"/>
+    <result property="student.studentSex" column="student_sex"/>
+    <result property="student.classId" column="class_id"/>
+    <result property="student.studentImg" column="student_img"/>
+  </resultMap>
+
+  <sql id="Base_Column_List" >
+    reply_id, topic_id, replyer_id, reply_content, reply_time
+  </sql>
+
+  <!-- 查询所有回复 -->
+  <select id="selectReply" parameterType="Map" resultType="com.education.pojo.Reply">
+    select reply_id, topic_id, replyer_id, reply_content, reply_time from reply where 1=1
+    <if test="replyId!=null">
+      and reply_id like '%${replyId}%'
+    </if>
+    <if test="replyerId!=null">
+      and replyer_id like '%${replyerId}%'
+    </if>
+    <if test="replyContent!=null">
+      and reply_content like '%${replyContent}%'
+    </if>
+  </select>
+
+  <select id="selectReplyVoByTopicId" parameterType="java.lang.Integer" resultMap="ReplyVoListMap">
+    select *
+    from reply,student
+    where reply.replyer_id=student.student_id and reply.topic_id=#{topicId}
+  </select>
+  
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from reply
+    where reply_id = #{replyId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from reply
+    where reply_id = #{replyId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.education.pojo.Reply" useGeneratedKeys="true" keyProperty="replyId">
+    insert into reply (reply_id, topic_id, replyer_id,
+      reply_content, reply_time)
+    values (#{replyId,jdbcType=INTEGER}, #{topicId,jdbcType=INTEGER}, #{replyerId,jdbcType=INTEGER},
+      #{replyContent,jdbcType=VARCHAR}, #{replyTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.education.pojo.Reply" >
+    insert into reply
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="replyId != null" >
+        reply_id,
+      </if>
+      <if test="topicId != null" >
+        topic_id,
+      </if>
+      <if test="replyerId != null" >
+        replyer_id,
+      </if>
+      <if test="replyContent != null" >
+        reply_content,
+      </if>
+      <if test="replyTime != null" >
+        reply_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="replyId != null" >
+        #{replyId,jdbcType=INTEGER},
+      </if>
+      <if test="topicId != null" >
+        #{topicId,jdbcType=INTEGER},
+      </if>
+      <if test="replyerId != null" >
+        #{replyerId,jdbcType=INTEGER},
+      </if>
+      <if test="replyContent != null" >
+        #{replyContent,jdbcType=VARCHAR},
+      </if>
+      <if test="replyTime != null" >
+        #{replyTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.education.pojo.Reply" >
+    update reply
+    <set >
+      <if test="topicId != null" >
+        topic_id = #{topicId,jdbcType=INTEGER},
+      </if>
+      <if test="replyerId != null" >
+        replyer_id = #{replyerId,jdbcType=INTEGER},
+      </if>
+      <if test="replyContent != null" >
+        reply_content = #{replyContent,jdbcType=VARCHAR},
+      </if>
+      <if test="replyTime != null" >
+        reply_time = #{replyTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where reply_id = #{replyId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.education.pojo.Reply" >
+    update reply
+    set topic_id = #{topicId,jdbcType=INTEGER},
+      replyer_id = #{replyerId,jdbcType=INTEGER},
+      reply_content = #{replyContent,jdbcType=VARCHAR},
+      reply_time = #{replyTime,jdbcType=TIMESTAMP}
+    where reply_id = #{replyId,jdbcType=INTEGER}
+  </update>
+</mapper>

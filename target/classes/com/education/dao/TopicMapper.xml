@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.education.dao.TopicMapper" >
+  <resultMap id="BaseResultMap" type="com.education.pojo.Topic" >
+    <constructor >
+      <idArg column="topic_id" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="publisher_id" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="courselist_id" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="topic_title" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="topic_content" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="topic_published_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+      <arg column="reply_number" jdbcType="INTEGER" javaType="java.lang.Integer" />
+    </constructor>
+  </resultMap>
+
+  <resultMap id="TopicVoListMap" type="com.education.pojo.TopicVo">
+    <result property="topic.topicId" column="topic_id"/>
+    <result property="topic.topicTitle" column="topic_title"/>
+    <result property="topic.publisherId" column="publisher_id"/>
+    <result property="topic.courselistId" column="courselist_id"/>
+    <result property="topic.topicContent" column="topic_content"/>
+    <result property="topic.topicPublishedTime" column="topic_published_time"/>
+    <result property="topic.replyNumber" column="reply_number"/>
+    <result property="student.studentId" column="student_id"/>
+    <result property="student.studentName" column="student_name"/>
+    <result property="student.studentPwd" column="student_pwd"/>
+    <result property="student.studentSex" column="student_sex"/>
+    <result property="student.classId" column="class_id"/>
+    <result property="student.studentImg" column="student_img"/>
+  </resultMap>
+
+  <sql id="Base_Column_List" >
+    topic_id, publisher_id, courselist_id, topic_title, topic_content, topic_published_time, 
+    reply_number
+  </sql>
+
+  <!-- 查询所有帖子 -->
+  <select id="selectTopic" parameterType="Map" resultType="com.education.pojo.Topic">
+    select topic_id, publisher_id, topic_title, topic_content, topic_published_time from topic where 1=1
+    <if test="topicId!=null">
+      and topic_id like '%${topicId}%'
+    </if>
+    <if test="topicTitle!=null">
+      and topic_title like '%${topicTitle}%'
+    </if>
+    <if test="topicContent!=null">
+      and topic_content like '%${topicContent}%'
+    </if>
+  </select>
+
+  <select id="selectAllTopicVo" parameterType="java.lang.Integer" resultMap="TopicVoListMap">
+    select *
+    from topic,student
+    where topic.publisher_id=student.student_id and topic.courselist_id=#{courselistId}
+  </select>
+
+  <select id="queryTopicVoById" parameterType="java.lang.Integer" resultMap="TopicVoListMap">
+    select *
+    from topic,student
+    where topic.publisher_id=student.student_id and topic.topic_id=#{topicId}
+  </select>
+
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from topic
+    where topic_id = #{topicId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from topic
+    where topic_id = #{topicId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.education.pojo.Topic" useGeneratedKeys="true" keyProperty="topicId">
+    insert into topic (topic_id, publisher_id, courselist_id, 
+      topic_title, topic_content, topic_published_time, 
+      reply_number)
+    values (#{topicId,jdbcType=INTEGER}, #{publisherId,jdbcType=INTEGER}, #{courselistId,jdbcType=INTEGER}, 
+      #{topicTitle,jdbcType=VARCHAR}, #{topicContent,jdbcType=VARCHAR}, #{topicPublishedTime,jdbcType=TIMESTAMP}, 
+      #{replyNumber,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.education.pojo.Topic" >
+    insert into topic
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="topicId != null" >
+        topic_id,
+      </if>
+      <if test="publisherId != null" >
+        publisher_id,
+      </if>
+      <if test="courselistId != null" >
+        courselist_id,
+      </if>
+      <if test="topicTitle != null" >
+        topic_title,
+      </if>
+      <if test="topicContent != null" >
+        topic_content,
+      </if>
+      <if test="topicPublishedTime != null" >
+        topic_published_time,
+      </if>
+      <if test="replyNumber != null" >
+        reply_number,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="topicId != null" >
+        #{topicId,jdbcType=INTEGER},
+      </if>
+      <if test="publisherId != null" >
+        #{publisherId,jdbcType=INTEGER},
+      </if>
+      <if test="courselistId != null" >
+        #{courselistId,jdbcType=INTEGER},
+      </if>
+      <if test="topicTitle != null" >
+        #{topicTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="topicContent != null" >
+        #{topicContent,jdbcType=VARCHAR},
+      </if>
+      <if test="topicPublishedTime != null" >
+        #{topicPublishedTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="replyNumber != null" >
+        #{replyNumber,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.education.pojo.Topic" >
+    update topic
+    <set >
+      <if test="publisherId != null" >
+        publisher_id = #{publisherId,jdbcType=INTEGER},
+      </if>
+      <if test="courselistId != null" >
+        courselist_id = #{courselistId,jdbcType=INTEGER},
+      </if>
+      <if test="topicTitle != null" >
+        topic_title = #{topicTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="topicContent != null" >
+        topic_content = #{topicContent,jdbcType=VARCHAR},
+      </if>
+      <if test="topicPublishedTime != null" >
+        topic_published_time = #{topicPublishedTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="replyNumber != null" >
+        reply_number = #{replyNumber,jdbcType=INTEGER},
+      </if>
+    </set>
+    where topic_id = #{topicId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.education.pojo.Topic" >
+    update topic
+    set publisher_id = #{publisherId,jdbcType=INTEGER},
+      courselist_id = #{courselistId,jdbcType=INTEGER},
+      topic_title = #{topicTitle,jdbcType=VARCHAR},
+      topic_content = #{topicContent,jdbcType=VARCHAR},
+      topic_published_time = #{topicPublishedTime,jdbcType=TIMESTAMP},
+      reply_number = #{replyNumber,jdbcType=INTEGER}
+    where topic_id = #{topicId,jdbcType=INTEGER}
+  </update>
+</mapper>

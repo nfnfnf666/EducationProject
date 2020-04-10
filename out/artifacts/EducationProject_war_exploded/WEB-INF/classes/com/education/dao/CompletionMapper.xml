@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.education.dao.CompletionMapper" >
+  <resultMap id="BaseResultMap" type="com.education.pojo.Completion" >
+    <constructor >
+      <idArg column=" completion_id" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="task_id" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="student_id" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="submission_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+      <arg column="completion_score" jdbcType="VARCHAR" javaType="java.lang.String" />
+    </constructor>
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.education.pojo.Completion" >
+    <constructor >
+      <idArg column=" completion_id" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="task_id" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="student_id" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="submission_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+      <arg column="completion_score" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="completion_content" jdbcType="LONGVARCHAR" javaType="java.lang.String" />
+    </constructor>
+  </resultMap>
+  <sql id="Base_Column_List" >
+    " completion_id", task_id, student_id, submission_time, completion_score
+  </sql>
+  <sql id="Blob_Column_List" >
+    completion_content
+  </sql>
+
+  <select id="selectCompletionByTaskIdAndStduentId" parameterType="java.util.Map" resultType="com.education.pojo.Completion">
+    select * from completion where 1=1
+      and task_id = #{taskId}
+      and student_id = #{studentId}
+  </select>
+
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from completion
+    where " completion_id" = #{completionId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from completion
+    where " completion_id" = #{completionId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.education.pojo.Completion" useGeneratedKeys="true" keyProperty="completionId">
+    insert into completion (completion_id, task_id, student_id,
+      submission_time, completion_score, completion_content
+      )
+    values (#{completionId,jdbcType=INTEGER}, #{taskId,jdbcType=INTEGER}, #{studentId,jdbcType=INTEGER}, 
+      #{submissionTime,jdbcType=TIMESTAMP}, #{completionScore,jdbcType=VARCHAR}, #{completionContent,jdbcType=LONGVARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.education.pojo.Completion" >
+    insert into completion
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="completionId != null" >
+        " completion_id",
+      </if>
+      <if test="taskId != null" >
+        task_id,
+      </if>
+      <if test="studentId != null" >
+        student_id,
+      </if>
+      <if test="submissionTime != null" >
+        submission_time,
+      </if>
+      <if test="completionScore != null" >
+        completion_score,
+      </if>
+      <if test="completionContent != null" >
+        completion_content,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="completionId != null" >
+        #{completionId,jdbcType=INTEGER},
+      </if>
+      <if test="taskId != null" >
+        #{taskId,jdbcType=INTEGER},
+      </if>
+      <if test="studentId != null" >
+        #{studentId,jdbcType=INTEGER},
+      </if>
+      <if test="submissionTime != null" >
+        #{submissionTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="completionScore != null" >
+        #{completionScore,jdbcType=VARCHAR},
+      </if>
+      <if test="completionContent != null" >
+        #{completionContent,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.education.pojo.Completion" >
+    update completion
+    <set >
+      <if test="taskId != null" >
+        task_id = #{taskId,jdbcType=INTEGER},
+      </if>
+      <if test="studentId != null" >
+        student_id = #{studentId,jdbcType=INTEGER},
+      </if>
+      <if test="submissionTime != null" >
+        submission_time = #{submissionTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="completionScore != null" >
+        completion_score = #{completionScore,jdbcType=VARCHAR},
+      </if>
+      <if test="completionContent != null" >
+        completion_content = #{completionContent,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where " completion_id" = #{completionId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.education.pojo.Completion" >
+    update completion
+    set task_id = #{taskId,jdbcType=INTEGER},
+      student_id = #{studentId,jdbcType=INTEGER},
+      submission_time = #{submissionTime,jdbcType=TIMESTAMP},
+      completion_score = #{completionScore,jdbcType=VARCHAR},
+      completion_content = #{completionContent,jdbcType=LONGVARCHAR}
+    where " completion_id" = #{completionId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.education.pojo.Completion" >
+    update completion
+    set task_id = #{taskId,jdbcType=INTEGER},
+      student_id = #{studentId,jdbcType=INTEGER},
+      submission_time = #{submissionTime,jdbcType=TIMESTAMP},
+      completion_score = #{completionScore,jdbcType=VARCHAR}
+    where " completion_id" = #{completionId,jdbcType=INTEGER}
+  </update>
+</mapper>

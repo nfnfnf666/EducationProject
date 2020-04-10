@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.education.dao.TaskMapper" >
+  <resultMap id="BaseResultMap" type="com.education.pojo.Task" >
+    <constructor >
+      <idArg column="task_id" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="courselist_id" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="task_title" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="task_published_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+    </constructor>
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.education.pojo.Task" >
+    <constructor >
+      <idArg column="task_id" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="courselist_id" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="task_title" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="task_published_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+      <arg column="task_content" jdbcType="LONGVARCHAR" javaType="java.lang.String" />
+    </constructor>
+  </resultMap>
+  <sql id="Base_Column_List" >
+    task_id, courselist_id, task_title, task_published_time
+  </sql>
+  <sql id="Blob_Column_List" >
+    task_content
+  </sql>
+
+  <select id="selectAllTask" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Integer">
+    select a.*
+    from task a
+    where 1=1
+    <if test="courselistId!=null">
+      and courselist_id=#{courselistId,jdbcType=INTEGER}
+    </if>
+  </select>
+
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from task
+    where task_id = #{taskId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from task
+    where task_id = #{taskId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.education.pojo.Task" >
+    insert into task (task_id, courselist_id, task_title, 
+      task_published_time, task_content)
+    values (#{taskId,jdbcType=INTEGER}, #{courselistId,jdbcType=INTEGER}, #{taskTitle,jdbcType=VARCHAR}, 
+      #{taskPublishedTime,jdbcType=TIMESTAMP}, #{taskContent,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.education.pojo.Task" >
+    insert into task
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="taskId != null" >
+        task_id,
+      </if>
+      <if test="courselistId != null" >
+        courselist_id,
+      </if>
+      <if test="taskTitle != null" >
+        task_title,
+      </if>
+      <if test="taskPublishedTime != null" >
+        task_published_time,
+      </if>
+      <if test="taskContent != null" >
+        task_content,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="taskId != null" >
+        #{taskId,jdbcType=INTEGER},
+      </if>
+      <if test="courselistId != null" >
+        #{courselistId,jdbcType=INTEGER},
+      </if>
+      <if test="taskTitle != null" >
+        #{taskTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="taskPublishedTime != null" >
+        #{taskPublishedTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="taskContent != null" >
+        #{taskContent,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.education.pojo.Task" >
+    update task
+    <set >
+      <if test="courselistId != null" >
+        courselist_id = #{courselistId,jdbcType=INTEGER},
+      </if>
+      <if test="taskTitle != null" >
+        task_title = #{taskTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="taskPublishedTime != null" >
+        task_published_time = #{taskPublishedTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="taskContent != null" >
+        task_content = #{taskContent,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where task_id = #{taskId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.education.pojo.Task" >
+    update task
+    set courselist_id = #{courselistId,jdbcType=INTEGER},
+      task_title = #{taskTitle,jdbcType=VARCHAR},
+      task_published_time = #{taskPublishedTime,jdbcType=TIMESTAMP},
+      task_content = #{taskContent,jdbcType=LONGVARCHAR}
+    where task_id = #{taskId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.education.pojo.Task" >
+    update task
+    set courselist_id = #{courselistId,jdbcType=INTEGER},
+      task_title = #{taskTitle,jdbcType=VARCHAR},
+      task_published_time = #{taskPublishedTime,jdbcType=TIMESTAMP}
+    where task_id = #{taskId,jdbcType=INTEGER}
+  </update>
+</mapper>
