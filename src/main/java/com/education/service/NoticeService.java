@@ -35,7 +35,7 @@ public class NoticeService {
     }
 
     public int update(Notice notice){
-        return noticeMapper.updateByPrimaryKeyWithBLOBs(notice);
+        return noticeMapper.updateByPrimaryKeySelective(notice);
     }
 
     public int insert(Notice notice){

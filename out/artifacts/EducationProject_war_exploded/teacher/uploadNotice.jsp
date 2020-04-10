@@ -13,7 +13,7 @@
 <body>
 
 <form class="layui-form" lay-filter="layuiadmin-form-useradmin" id="layuiadmin-form-useradmin" style="padding: 20px 0 0 0;">
-    <input type="text" name="courseId" class="layui-input layui-hide" value="${notice.noticeId}">
+    <input type="text" name="noticeId" class="layui-input layui-hide" value="${notice.noticeId}">
     <div class="layui-form-item">
         <label class="layui-form-label">公告标题</label>
         <div class="layui-input-inline">
