@@ -12,17 +12,11 @@
   </resultMap>
 
   <resultMap id="ReplyVoListMap" type="com.education.pojo.ReplyVo">
-    <result property="reply.replyId" column="reply_id"/>
-    <result property="reply.topicId" column="topic_id"/>
-    <result property="reply.replyerId" column="replyer_id"/>
-    <result property="reply.replyContent" column="reply_content"/>
-    <result property="reply.replyTime" column="reply_time"/>
-    <result property="student.studentId" column="student_id"/>
-    <result property="student.studentName" column="student_name"/>
-    <result property="student.studentPwd" column="student_pwd"/>
-    <result property="student.studentSex" column="student_sex"/>
-    <result property="student.classId" column="class_id"/>
-    <result property="student.studentImg" column="student_img"/>
+    <result property="name" column="name"/>
+    <result property="img" column="img"/>
+    <result property="replyId" column="reply_id"/>
+    <result property="replyContent" column="reply_content"/>
+    <result property="replyTime" column="reply_time"/>
   </resultMap>
 
   <sql id="Base_Column_List" >
@@ -44,9 +38,13 @@
   </select>
 
   <select id="selectReplyVoByTopicId" parameterType="java.lang.Integer" resultMap="ReplyVoListMap">
-    select *
+    select student_name as name,student_img as img,reply_id,reply_content,reply_time
     from reply,student
     where reply.replyer_id=student.student_id and reply.topic_id=#{topicId}
+    union
+    select teacher_name as name,teacher_img as img,reply_id,reply_content,reply_time
+    from reply,teacher
+    where reply.replyer_id=teacher.teacher_id and reply.topic_id=#{topicId}
   </select>
   
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >

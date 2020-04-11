@@ -57,8 +57,6 @@ public class ReplyController {
         return json.toString();
     }
 
-
-
     @RequestMapping("addReply")
     public ModelAndView addReply(HttpServletRequest request,
                                  @RequestParam("topicId") Integer topicId,
@@ -79,6 +77,27 @@ public class ReplyController {
         mav.addObject("replyVoList",replyVoList);
         return mav;
     }
+
+    @RequestMapping("addTeacherReply")
+    public ModelAndView addTeacherReply(HttpServletRequest request,
+                                 @RequestParam("topicId") Integer topicId,
+                                 @RequestParam("content") String content){
+        ModelAndView mav = null;
+        Reply reply = new Reply();
+        reply.setTopicId(topicId);
+        reply.setReplyerId((Integer) request.getSession().getAttribute("teacherId"));
+        reply.setReplyContent(content);
+        reply.setReplyTime(new Date());
+        replyService.insertReply(reply);
+
+        TopicVo topicVo = topicService.queryTopicVoById(topicId);
+        List<ReplyVo> replyVoList = replyService.selectReplyVoByTopicId(topicId);
+        mav = new ModelAndView("teacher/reply");
+        mav.addObject("topicVo",topicVo);
+        mav.addObject("replyVoList",replyVoList);
+        return mav;
+    }
+
 
     /**
      * 根据ID删除回复

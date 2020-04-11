@@ -15,16 +15,16 @@
     <div class="layui-row layui-col-space15">
         <div class="layui-col-md12 content detail">
             <div class="fly-panel detail-box">
-                <h1>${topicVo.topic.topicTitle}</h1>
+                <h1>${topicVo.topicTitle}</h1>
                 <div class="detail-about">
                     <a class="fly-avatar" href="">
-                        <img src="image/${topicVo.student.studentImg}" alt="${topicVo.student.studentName}">
+                        <img src="image/${topicVo.img}" alt="${topicVo.name}">
                     </a>
                     <div class="fly-detail-user">
                         <a href="" class="fly-link">
-                            <cite>${topicVo.student.studentName}</cite>
+                            <cite>${topicVo.name}</cite>
                         </a>
-                        <span>${topicVo.topic.topicPublishedTime}</span>
+                        <span>${topicVo.topicPublishedTime}</span>
                     </div>
                     <div class="detail-hits" id="LAY_jieAdmin" data-id="123">
                         <span class="layui-btn layui-btn-xs jie-admin" type="edit"><a href="add.html">编辑此贴</a></span>
@@ -32,7 +32,7 @@
                 </div>
                 <div class="detail-body photos">
                     <p>
-                        ${topicVo.topic.topicContent}
+                        ${topicVo.topicContent}
                     </p>
                 </div>
             </div>
@@ -48,27 +48,27 @@
                             <a name="item-1111111111"></a>
                             <div class="detail-about detail-about-reply">
                                 <a class="fly-avatar" href="">
-                                    <img src="image/${replyVo.student.studentImg}" alt="${replyVo.student.studentName}">
+                                    <img src="image/${replyVo.img}" alt="${replyVo.name}">
                                 </a>
                                 <div class="fly-detail-user">
                                     <a href="" class="fly-link">
-                                        <cite>${replyVo.student.studentName}</cite>
+                                        <cite>${replyVo.name}</cite>
                                     </a>
                                 </div>
 
                                 <div class="detail-hits">
-                                    <span>${replyVo.reply.replyTime}</span>
+                                    <span>${replyVo.replyTime}</span>
                                 </div>
                             </div>
                             <div class="detail-body jieda-body photos">
-                              <p>${replyVo.reply.replyContent}</p>
+                              <p>${replyVo.replyContent}</p>
                             </div>
                         </li>
                     </c:forEach>
                 </ul>
 
                 <div class="layui-form layui-form-pane">
-                    <form action="addReply.do?topicId=${topicVo.topic.topicId}" method="post">
+                    <form action="addTeacherReply.do?topicId=${topicVo.topicId}" method="post">
                         <div class="layui-form-item layui-form-text">
                             <a name="comment"></a>
                             <div class="layui-input-block">

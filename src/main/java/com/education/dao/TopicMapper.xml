@@ -14,19 +14,13 @@
   </resultMap>
 
   <resultMap id="TopicVoListMap" type="com.education.pojo.TopicVo">
-    <result property="topic.topicId" column="topic_id"/>
-    <result property="topic.topicTitle" column="topic_title"/>
-    <result property="topic.publisherId" column="publisher_id"/>
-    <result property="topic.courselistId" column="courselist_id"/>
-    <result property="topic.topicContent" column="topic_content"/>
-    <result property="topic.topicPublishedTime" column="topic_published_time"/>
-    <result property="topic.replyNumber" column="reply_number"/>
-    <result property="student.studentId" column="student_id"/>
-    <result property="student.studentName" column="student_name"/>
-    <result property="student.studentPwd" column="student_pwd"/>
-    <result property="student.studentSex" column="student_sex"/>
-    <result property="student.classId" column="class_id"/>
-    <result property="student.studentImg" column="student_img"/>
+    <result property="name" column="name"/>
+    <result property="img" column="img"/>
+    <result property="topicId" column="topic_id"/>
+    <result property="topicTitle" column="topic_title"/>
+    <result property="topicContent" column="topic_content"/>
+    <result property="topicPublishedTime" column="topic_published_time"/>
+    <result property="replyNumber" column="reply_number"/>
   </resultMap>
 
   <sql id="Base_Column_List" >
@@ -49,15 +43,23 @@
   </select>
 
   <select id="selectAllTopicVo" parameterType="java.lang.Integer" resultMap="TopicVoListMap">
-    select *
-    from topic,student
-    where topic.publisher_id=student.student_id and topic.courselist_id=#{courselistId}
+    select student_name as name,student_img as img,topic_id,topic_title,topic_content,topic_published_time,reply_number
+    from student,topic
+    where student.student_id=topic.publisher_id and topic.courselist_id=#{courselistId}
+    union
+    select teacher_name as name,teacher_img as img,topic_id,topic_title,topic_content,topic_published_time,reply_number
+    from teacher,topic
+    where teacher.teacher_id=topic.publisher_id and topic.courselist_id=#{courselistId}
   </select>
 
   <select id="queryTopicVoById" parameterType="java.lang.Integer" resultMap="TopicVoListMap">
-    select *
-    from topic,student
-    where topic.publisher_id=student.student_id and topic.topic_id=#{topicId}
+    select student_name as name,student_img as img,topic_id,topic_title,topic_content,topic_published_time,reply_number
+    from student,topic
+    where student.student_id=topic.publisher_id and topic.topic_id=#{topicId}
+    union
+    select teacher_name as name,teacher_img as img,topic_id,topic_title,topic_content,topic_published_time,reply_number
+    from teacher,topic
+    where teacher.teacher_id=topic.publisher_id and topic.topic_id=#{topicId}
   </select>
 
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >

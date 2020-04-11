@@ -101,7 +101,7 @@
                     </li>
 
                     <li data-name="set" class="layui-nav-item">
-                        <a href="javascript:;" lay-href="topicPage.do?courselistId=${courselistId}" lay-tips="讨论区" lay-direction="2">
+                        <a href="javascript:;" lay-href="teacherTopicPage.do?courselistId=${courselistId}" lay-tips="讨论区" lay-direction="2">
                             <i class="layui-icon layui-icon-dialogue"></i>
                             <cite>讨论区</cite>
                         </a>

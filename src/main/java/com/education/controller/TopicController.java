@@ -62,9 +62,16 @@ public class TopicController {
     public ModelAndView topicPage(@RequestParam("courselistId") Integer courselistId){
         ModelAndView mav = null;
         List<TopicVo> topicVoList = topicService.selectAllTopicVo(courselistId);
-        System.out.println("topicPage.do:topicVoList的student值为："+topicVoList.get(0).getStudent().toString());
-        System.out.println("topicPage.do:topicVoList的topic值为："+topicVoList.get(0).getTopic().toString());
         mav = new ModelAndView("student/showTopic");
+        mav.addObject("topicVoList", topicVoList);
+        return mav;
+    }
+
+    @RequestMapping("teacherTopicPage")
+    public ModelAndView teacherTopicPage(@RequestParam("courselistId") Integer courselistId){
+        ModelAndView mav = null;
+        List<TopicVo> topicVoList = topicService.selectAllTopicVo(courselistId);
+        mav = new ModelAndView("teacher/topic");
         mav.addObject("topicVoList", topicVoList);
         return mav;
     }
@@ -75,7 +82,12 @@ public class TopicController {
                                  @RequestParam("content") String topicContent){
         ModelAndView mav = null;
         Topic topic = new Topic();
-        topic.setPublisherId((Integer) request.getSession().getAttribute("studentId"));
+        Integer publisherId = (Integer) request.getSession().getAttribute("studentId");
+        if (publisherId == null){
+            System.out.println("addTopic.do中的publisherId为空，登录者是老师");
+            publisherId = (Integer) request.getSession().getAttribute("teacherId");
+        }
+        topic.setPublisherId(publisherId);
         topic.setCourselistId((Integer) request.getSession().getAttribute("courselistId"));
         topic.setTopicTitle(topicTitle);
         topic.setTopicContent(topicContent);
@@ -83,7 +95,13 @@ public class TopicController {
         topic.setReplyNumber(6);
         topicService.insertTopic(topic);
         List<TopicVo> topicVoList = topicService.selectAllTopicVo((Integer) request.getSession().getAttribute("courselistId"));
-        mav = new ModelAndView("student/showTopic");
+        if (request.getSession().getAttribute("studentId") != null){
+            System.out.println("addTopic.do中的studentId不为空，返回学生讨论主页");
+            mav = new ModelAndView("student/showTopic");
+        } else {
+            System.out.println("addTopic.do中的studentId是空的，返回教师讨论主页");
+            mav = new ModelAndView("teacher/topic");
+        }
         mav.addObject("topicVoList", topicVoList);
         return mav;
     }
@@ -166,6 +184,17 @@ public class TopicController {
         TopicVo topicVo = topicService.queryTopicVoById(topicId);
         List<ReplyVo> replyVoList = replyService.selectReplyVoByTopicId(topicId);
         mav = new ModelAndView("student/topicDetail");
+        mav.addObject("topicVo",topicVo);
+        mav.addObject("replyVoList",replyVoList);
+        return mav;
+    }
+
+    @RequestMapping(value = "topic")
+    public ModelAndView topic(@RequestParam("topicId") Integer topicId){
+        ModelAndView mav = null;
+        TopicVo topicVo = topicService.queryTopicVoById(topicId);
+        List<ReplyVo> replyVoList = replyService.selectReplyVoByTopicId(topicId);
+        mav = new ModelAndView("teacher/reply");
         mav.addObject("topicVo",topicVo);
         mav.addObject("replyVoList",replyVoList);
         return mav;

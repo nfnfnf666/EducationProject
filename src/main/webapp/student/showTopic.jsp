@@ -20,20 +20,20 @@
                 <ul class="fly-list">
                     <c:forEach items="${topicVoList}" var="topicVo">
                         <li>
-                            <a href="topicDetail.do?topicId=${topicVo.topic.topicId}" class="fly-avatar">
-                                <img src="image/${topicVo.student.studentImg}" width="42" height="42" alt="${topicVo.student.studentName}">
+                            <a href="topicDetail.do?topicId=${topicVo.topicId}" class="fly-avatar">
+                                <img src="image/${topicVo.img}" width="42" height="42" alt="${topicVo.name}">
                             </a>
                             <h2>
                                 <a class="layui-badge">动态</a>
-                                <a href="topicDetail.do?topicId=${topicVo.topic.topicId}">${topicVo.topic.topicTitle}</a>
+                                <a href="topicDetail.do?topicId=${topicVo.topicId}">${topicVo.topicTitle}</a>
                             </h2>
                             <div class="fly-list-info">
-                                <a href="topicDetail.do?topicId=${topicVo.topic.topicId}" link>
-                                    <cite>${topicVo.student.studentName}</cite>
+                                <a href="topicDetail.do?topicId=${topicVo.topicId}" link>
+                                    <cite>${topicVo.name}</cite>
                                 </a>
-                                <span>${topicVo.topic.topicPublishedTime}</span>
+                                <span>${topicVo.topicPublishedTime}</span>
                                 <span class="fly-list-nums">
-                                    <i class="iconfont icon-pinglun1" title="回答"></i> ${topicVo.topic.replyNumber}
+                                    <i class="iconfont icon-pinglun1" title="回答"></i> ${topicVo.replyNumber}
                                 </span>
                             </div>
                         </li>
