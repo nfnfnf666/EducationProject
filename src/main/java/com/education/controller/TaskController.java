@@ -1,6 +1,7 @@
 package com.education.controller;
 
 import com.education.pojo.Completion;
+import com.education.pojo.Notice;
 import com.education.pojo.Student;
 import com.education.pojo.Task;
 import com.education.service.CompletionService;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Date;
 import java.util.List;
 
 @Controller
@@ -52,6 +54,20 @@ public class TaskController {
             model.addAttribute("completion", completion);
         }
         return "student/taskDetail";
+    }
+
+    @RequestMapping(value = "insertTask")
+    @ResponseBody
+    public String insertTask(Task task, HttpServletRequest request){
+        task.setCourselistId((Integer) request.getSession().getAttribute("courselistId"));
+        task.setTaskPublishedTime(new Date());
+        int i=taskService.insert(task);
+        JSONObject json=new JSONObject();
+        json.put("code",0);
+        json.put("msg","");
+        json.put("count",1);
+        json.put("data",i);
+        return json.toString();
     }
 
 }

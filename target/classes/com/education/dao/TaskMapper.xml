@@ -46,7 +46,7 @@
     delete from task
     where task_id = #{taskId,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.education.pojo.Task" >
+  <insert id="insert" parameterType="com.education.pojo.Task" useGeneratedKeys="true" keyProperty="taskId">
     insert into task (task_id, courselist_id, task_title, 
       task_published_time, task_content)
     values (#{taskId,jdbcType=INTEGER}, #{courselistId,jdbcType=INTEGER}, #{taskTitle,jdbcType=VARCHAR}, 

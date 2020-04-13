@@ -94,7 +94,7 @@
                     </li>
 
                     <li data-name="template" class="layui-nav-item">
-                        <a href="javascript:;" lay-href="student/showTask.jsp?courselistId=${courselistId}" lay-tips="作业管理" lay-direction="2">
+                        <a href="javascript:;" lay-href="teacher/task.jsp" lay-tips="作业管理" lay-direction="2">
                             <i class="layui-icon layui-icon-template-1"></i>
                             <cite>作业管理</cite>
                         </a>

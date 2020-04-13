@@ -38,4 +38,17 @@ public class CompletionController {
         return json.toString();
     }
 
+    @RequestMapping("completionDetail")
+    @ResponseBody
+    public String completionDetail(@RequestParam("taskId") Integer taskId){
+        System.out.println("completionDetail.do中接收到的taskId值为："+taskId);
+
+        /*select student.student_id,student.student_name
+        from task,completion,student,courselist
+        where task.task_id=100001 and task.courselist_id=courselist.courselist_id and
+        courselist.class_id=student.class_id*/
+
+        return "";
+    }
+
 }

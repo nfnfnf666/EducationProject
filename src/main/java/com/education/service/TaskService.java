@@ -20,4 +20,8 @@ public class TaskService {
         return taskMapper.selectByPrimaryKey(taskId);
     }
 
+    public int insert(Task task){
+        return taskMapper.insert(task);
+    }
+
 }
