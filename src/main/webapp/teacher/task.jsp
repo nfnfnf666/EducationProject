@@ -106,7 +106,7 @@
                     title: '作业完成详情',   //弹出层的标题
                     maxmin: true,
                     type: 2,
-                    content: 'teacher/completionDetail.jsp?taskId='+data.taskId, //要访问的地址
+                    content: 'viewCompletionDetail.do?taskId='+data.taskId, //要访问的地址
                     area: ['820px', '600px'],
 
 

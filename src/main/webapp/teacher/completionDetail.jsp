@@ -8,14 +8,15 @@
     <meta name="renderer" content="webkit">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
-    <link rel="stylesheet" href="../layuiadmin/layui/css/layui.css" media="all">
-    <link rel="stylesheet" href="../layuiadmin/style/admin.css" media="all">
+    <link rel="stylesheet" href="layuiadmin/layui/css/layui.css" media="all">
+    <link rel="stylesheet" href="layuiadmin/style/admin.css" media="all">
 </head>
 <body>
 
 <div class="layui-fluid">
     <div class="layui-card">
         <div class="layui-card-body">
+            <input type="text" id="demoReload1" class="layui-input layui-hide" value="${taskId}">
             <table class="layui-hide" id="tableDemo" lay-filter="test"></table>
             <script type="text/html" id="barDemo">
                 <a class="layui-btn layui-btn-xs" lay-event="edit">查看完成内容</a>
@@ -24,10 +25,10 @@
     </div>
 </div>
 
-<script src="../layuiadmin/layui/layui.js"></script>
+<script src="layuiadmin/layui/layui.js"></script>
 <script>
     layui.config({
-        base: '../layuiadmin/' //静态资源所在路径
+        base: 'layuiadmin/' //静态资源所在路径
     }).extend({
         index: 'lib/index' //主入口模块
     }).use(['index', 'contlist', 'table'], function(){
@@ -36,9 +37,13 @@
         var form=layui.form;
         var layer=layui.layer;
         $ = layui.jquery;
+        var demoReload1 = $('#demoReload1');
         var d=table.render({
             elem: '#tableDemo'
-            ,url: "../completionDetail.do?taskId=${taskId}"
+            ,url: "completionDetail.do"
+            ,where: {
+                taskId: demoReload1.val()
+            }
             ,datatype:"json"
             ,parseData: function(res){ //res 即为原始返回的数据
                 return {
@@ -51,9 +56,9 @@
             ,title: '作业完成详情表'
             ,cols: [[
                 {type: 'checkbox', fixed: 'left'}
-                ,{field:'taskId', title:'作业ID', fixed: 'left', sort: true}
-                ,{field:'taskTitle', title:'作业标题', edit: 'text', fixed: 'left'}
-                ,{field:'taskPublishedTime', title:'发布时间', fixed: 'left'}
+                ,{field:'studentId', title:'学号', fixed: 'left', sort: true}
+                ,{field:'studentName', title:'姓名', edit: 'text', fixed: 'left'}
+                ,{field:'result', title:'是否完成', fixed: 'left'}
                 ,{fixed: 'right', title:'操作', toolbar: '#barDemo'}
             ]]
             ,page: { //支持传入 laypage 组件的所有参数（某些参数除外，如：jump/elem） - 详见文档

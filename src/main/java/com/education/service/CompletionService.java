@@ -2,10 +2,12 @@ package com.education.service;
 
 import com.education.dao.CompletionMapper;
 import com.education.pojo.Completion;
+import com.education.pojo.CompletionVo;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -22,6 +24,10 @@ public class CompletionService {
         map.put("taskId", taskId);
         map.put("studentId", studentId);
         return completionMapper.selectCompletionByTaskIdAndStduentId(map);
+    }
+
+    public List<CompletionVo> queryCompletionVoList(Integer taskId){
+        return completionMapper.queryCompletionVoList(taskId);
     }
 
 }

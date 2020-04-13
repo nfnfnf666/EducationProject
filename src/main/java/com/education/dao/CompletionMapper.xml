@@ -33,6 +33,13 @@
       and student_id = #{studentId}
   </select>
 
+  <select id="queryCompletionVoList" parameterType="java.lang.Integer" resultType="com.education.pojo.CompletionVo">
+    select student.student_id,student.student_name,isCompletion(student.student_id) as result
+    from task,completion,student,courselist
+    where task.task_id=#{taskId} and task.courselist_id=courselist.courselist_id and
+    courselist.class_id=student.class_id and task.task_id=completion.completion_id
+  </select>
+
   <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Integer" >
     select 
     <include refid="Base_Column_List" />
