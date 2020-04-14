@@ -2,6 +2,7 @@ package com.education.controller;
 
 import com.education.pojo.Completion;
 import com.education.pojo.CompletionVo;
+import com.education.pojo.Task;
 import com.education.service.CompletionService;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
@@ -26,7 +27,6 @@ public class CompletionController {
     @RequestMapping("addCompletion")
     @ResponseBody
     public String addCompletion(HttpServletRequest request,
-                                Model model,
                                 @RequestParam("taskId") Integer taskId,
                                 @RequestParam("completionContent") String completionContent){
         Completion completion = new Completion();
@@ -63,6 +63,30 @@ public class CompletionController {
         json.put("msg","");
         json.put("count",page.getTotal());
         json.put("data", JSONArray.fromObject(completionVoList));
+        return json.toString();
+    }
+
+    @RequestMapping("uploadCompletion")
+    public String uploadCompletion(@RequestParam("studentId") Integer studentId, Model model, HttpServletRequest request){
+        if(studentId!=null){
+            Completion completion = completionService.selectCompletionByTaskIdAndStduentId((Integer) request.getSession().getAttribute("taskId"),studentId);
+            model.addAttribute("completion", completion);
+        }
+        return "teacher/uploadCompletion";
+    }
+
+    @RequestMapping("scoreCompletion")
+    @ResponseBody
+    public String scoreCompletion(HttpServletRequest request,
+                                @RequestParam("completionId") String completionId,
+                                @RequestParam("completionScore") String completionScore){
+        System.out.println("scoreCompletion.do中接收到的completionId值为："+completionId+";接收到的completionScore值为："+completionScore);
+        int i = completionService.updateScoreById(completionId, completionScore);
+        JSONObject json=new JSONObject();
+        json.put("code",0);
+        json.put("msg","");
+        json.put("count",1);
+        json.put("data",i);
         return json.toString();
     }
 

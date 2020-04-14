@@ -20,7 +20,7 @@ public class CompletionService {
     }
 
     public Completion selectCompletionByTaskIdAndStduentId(Integer taskId, Integer studentId){
-        Map<String,Integer> map=new HashMap();
+        Map<String,Integer> map = new HashMap();
         map.put("taskId", taskId);
         map.put("studentId", studentId);
         return completionMapper.selectCompletionByTaskIdAndStduentId(map);
@@ -28,6 +28,13 @@ public class CompletionService {
 
     public List<CompletionVo> queryCompletionVoList(Integer taskId){
         return completionMapper.queryCompletionVoList(taskId);
+    }
+
+    public int updateScoreById(String completionId, String completionScore){
+        Map<String, String> map = new HashMap<>();
+        map.put("completionId", completionId);
+        map.put("completionScore", completionScore);
+        return completionMapper.updateScoreById(map);
     }
 
 }

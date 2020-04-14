@@ -13,6 +13,8 @@ public interface CompletionMapper {
 
     List<CompletionVo> queryCompletionVoList(Integer taskId);
 
+    int updateScoreById(Map map);
+
     int insert(Completion record);
 
     int insertSelective(Completion record);

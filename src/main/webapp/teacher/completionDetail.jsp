@@ -83,8 +83,8 @@
                     title: '完成作业',   //弹出层的标题
                     maxmin: true,
                     type: 2,
-                    content: 'uploadTask.do?taskId='+data.taskId, //要访问的地址
-                    area: ['820px', '600px'],
+                    content: 'uploadCompletion.do?studentId='+data.studentId, //要访问的地址
+                    area: ['600px', '400px'],
 
 
                     end: function () { //表示弹出层关闭的时候的代码块

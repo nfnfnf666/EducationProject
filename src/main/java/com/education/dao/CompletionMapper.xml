@@ -103,6 +103,11 @@
       </if>
     </trim>
   </insert>
+
+  <update id="updateScoreById" parameterType="java.util.Map">
+    update completion set completion_score=#{completionScore} where completion_id=#{completionId}
+  </update>
+
   <update id="updateByPrimaryKeySelective" parameterType="com.education.pojo.Completion" >
     update completion
     <set >
