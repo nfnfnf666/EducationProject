@@ -54,6 +54,11 @@
             <div class="layui-form-item">
                 <button class="layui-btn layui-btn-fluid" lay-submit lay-filter="LAY-user-login-submit">登 入</button>
             </div>
+            <div class="layui-form-item">
+                <c:if test="${!(message eq null)}">
+                    ${message}
+                </c:if>
+            </div>
         </form>
     </div>
 
@@ -78,6 +83,7 @@
 </div>
 
 <script src="../layuiadmin/layui/layui.js"></script>
+
 <script>
     layui.config({
         base: '../layuiadmin/' //静态资源所在路径
@@ -85,12 +91,12 @@
         index: 'lib/index' //主入口模块
     }).use(['index', 'user'], function(){
         var $ = layui.$
+            ,layer = layui.layer
             ,setter = layui.setter
             ,admin = layui.admin
             ,form = layui.form
             ,router = layui.router()
             ,search = router.search;
-
         form.render();
     });
 </script>

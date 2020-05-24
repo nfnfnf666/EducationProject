@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -31,7 +32,8 @@ public class UserController {
     public ModelAndView login(@RequestParam("userId") Integer userId, @RequestParam("password") String pwd,
                               @RequestParam("userType") String userType,
                               HttpServletRequest request,
-                              HttpServletResponse response) throws IOException {
+                              HttpServletResponse response,
+                              RedirectAttributes attr) throws IOException {
         System.out.println("进入UserController中的login方法");
         System.out.println("userId"+userId+"pwd"+pwd+"userType"+userType);
         ModelAndView mav=null;
@@ -49,7 +51,8 @@ public class UserController {
                 mav.addObject("courseList", courseList);
                 mav.addObject("studentList", studentList);
             } else {
-
+                attr.addAttribute("message","账号名或密码错误");
+                mav = new ModelAndView("redirect:/user/login.jsp");
             }
         } else if("teacher".equals(userType)){
             Teacher teacher = new Teacher();
@@ -64,7 +67,8 @@ public class UserController {
                 mav.addObject("classList", classList);
                 mav.addObject("teacherList", teacherList);
             } else {
-
+                attr.addAttribute("message","账号名或密码错误");
+                mav = new ModelAndView("redirect:/user/login.jsp");
             }
         } else if("admin".equals(userType)){
             Admin admin = new Admin();
@@ -76,7 +80,8 @@ public class UserController {
                 mav = new ModelAndView("/admin/homePage");
                 mav.addObject("adminList",adminList);
             } else {
-
+                attr.addAttribute("message","账号名或密码错误");
+                mav = new ModelAndView("redirect:/user/login.jsp");
             }
         }
         return mav;
