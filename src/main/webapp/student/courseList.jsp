@@ -63,7 +63,7 @@
                             <div class="layui-col-md4 layui-col-sm6">
                                 <a href="courseHome.do?studentId=${studentList.get(0).studentId}&courseId=${course.courseId}">
                                     <div class="layadmin-text-center">
-                                        <img src="${pageContext.request.contextPath}/image/语文.jpg">
+                                        <img src="${pageContext.request.contextPath}/image/course.jpg">
                                     </div>
                                 </a>
                             </div>

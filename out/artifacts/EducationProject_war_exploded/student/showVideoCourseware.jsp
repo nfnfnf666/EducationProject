@@ -17,32 +17,20 @@
 
 <div class="layui-fluid layadmin-cmdlist-fluid">
     <div class="layui-row layui-col-space30">
-
-        <div class="layui-col-md2 layui-col-sm4">
-            <div class="cmdlist-container">
-                <a href="play.do?courseListId=1001">
-                    <img src="image/video.png">
-                </a>
-                <a href="javascript:;">
-                    <div class="cmdlist-text">
-                        <p class="info">2018春夏季新款港味短款白色T恤+网纱中长款chic半身裙套装两件套</p>
-                    </div>
-                </a>
+        <c:forEach var="videoCourseware" items="${videoCoursewareList}">
+            <div class="layui-col-md2 layui-col-sm4">
+                <div class="cmdlist-container">
+                    <button id="layer">
+                        <img src="image/video.png">
+                    </button>
+                    <a href="javascript:;">
+                        <div class="cmdlist-text">
+                            <p class="info">${videoCourseware.coursewareName}</p>
+                        </div>
+                    </a>
+                </div>
             </div>
-        </div>
-
-        <div class="layui-col-md2 layui-col-sm4">
-            <div class="cmdlist-container">
-                <button id="layer">
-                    <img src="image/video.png">
-                </button>
-                <a href="javascript:;">
-                    <div class="cmdlist-text">
-                        <p class="info">2018春夏季新款港味短款白色T恤+网纱中长款chic半身裙套装两件套</p>
-                    </div>
-                </a>
-            </div>
-        </div>
+        </c:forEach>
 
     </div>
 </div>

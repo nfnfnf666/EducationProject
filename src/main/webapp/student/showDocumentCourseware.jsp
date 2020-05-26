@@ -17,20 +17,23 @@
 
 <div class="layui-fluid layadmin-cmdlist-fluid">
     <div class="layui-row layui-col-space30">
-
-        <div class="layui-col-md2 layui-col-sm4">
-            <div class="cmdlist-container">
-                <a href="student/documentDetail.jsp">
-                    <img src="image/workNotify.png">
-                </a>
-                <a href="javascript:;">
-                    <div class="cmdlist-text">
-                        <p class="info">2018春夏季新款港味短款白色T恤+网纱中长款chic半身裙套装两件套</p>
-                    </div>
-                </a>
+        <c:forEach var="documentCourseware" items="${documentCoursewareList}">
+            <div class="layui-col-md2 layui-col-sm4">
+                <div class="cmdlist-container">
+                    <%--<a href="student/documentDetail.jsp?url=${documentCourseware.coursewareUrl}">
+                        <img src="image/workNotify.png">
+                    </a>--%>
+                    <a href="student/documentDetail.jsp?url=${documentCourseware.coursewareUrl}">
+                        <img src="image/workNotify.png">
+                    </a>
+                    <a href="javascript:;">
+                        <div class="cmdlist-text">
+                            <p class="info">${documentCourseware.coursewareName}</p>
+                        </div>
+                    </a>
+                </div>
             </div>
-        </div>
-
+        </c:forEach>
     </div>
 </div>
 

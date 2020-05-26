@@ -15,7 +15,7 @@
         width: '100%',
         height: '100%',
         autoplay: true,
-        src:'../courseware/document/jianli.pdf',
+        src:'../<%=request.getParameter("url") %>',
     });
 </script>
 
