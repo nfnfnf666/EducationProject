@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -364,7 +365,7 @@ public class StudentController {
      */
     @RequestMapping(value = "uploadImage")
     @ResponseBody
-    public String uploadImage(@RequestParam MultipartFile file) throws Exception{
+    public String uploadImage(@RequestParam MultipartFile file, HttpServletRequest request) throws Exception{
         if(file.isEmpty()){
             return null;
         }
@@ -375,7 +376,7 @@ public class StudentController {
         json.put("count",1);
 
         String newName = UUID.randomUUID().toString()+"_"+file.getOriginalFilename();
-        String imagePath = "E:\\IdeaProjects\\EducationProject\\src\\main\\webapp\\image\\" + newName;
+        String imagePath = request.getServletContext().getRealPath("/image/") + newName;
         //将文件上传到本地
         FileUtils.copyInputStreamToFile(file.getInputStream(),new File(imagePath));
 //        System.out.println("imagePath:" + imagePath);
